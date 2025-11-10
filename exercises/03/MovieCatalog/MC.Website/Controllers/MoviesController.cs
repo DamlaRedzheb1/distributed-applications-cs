@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MC.Data.Entities;
 using MC.Website.Data;
 using X.PagedList;
-using X.PagedList.EF;
+using X.PagedList.EF.Core;
 
 namespace MC.Website.Controllers
 {

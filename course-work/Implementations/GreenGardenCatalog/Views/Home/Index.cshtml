@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="text-center mt-4">
+        <a class="btn btn-primary btn-lg"
+           asp-area="Identity"
+           asp-page="/Account/Login">
+            Login
+        </a>
+
+        <a class="btn btn-primary btn-lg "
+           asp-area="Identity"
+           asp-page="/Account/Register">
+            Register
+        </a>
+    </div>
+}
+else
+{
+    <div class="text-center mt-4">
+        <h4>Welcome @User.Identity.Name!</h4>
+        <a class="btn btn-primary btn-lg ms-2"
+           asp-area="Identity"
+           asp-page="/Account/Logout">
+            Logout
+        </a>
+
+        <a class="btn btn-primary btn-lg ms-2"
+            asp-area="Identity"
+            asp-page="/Account/ResetPassword">
+            Reset Password
+        </a>
+    </div>
+}
+<div class="text-center mt-4">
+    <a class="btn btn-primary btn-lg" asp-controller="Plants" asp-action="Index">Plants</a>
+    <a class="btn btn-primary btn-lg" asp-controller="Soils" asp-action="Index">Soils</a>
+    <a class="btn btn-primary btn-lg" asp-controller="Fertilizers" asp-action="Index">Fertilizers</a>
+</div>
+

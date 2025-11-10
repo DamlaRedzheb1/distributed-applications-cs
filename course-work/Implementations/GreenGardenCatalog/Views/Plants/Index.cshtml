@@ -1,0 +1,81 @@
+﻿@using X.PagedList
+@model IPagedList<GreenGardenCatalog.Entities.Plant>
+
+@{
+    ViewData["Title"] = "Plants";
+}
+
+<h1>Plants</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <input type="text" name="searchPlantingSeason" value="@ViewBag.PlantingSeasonSearch" class="form-control" placeholder="Search by Planting Season" />
+        </div>
+        <div class="col-md-3">
+            <select name="searchSoilId" class="form-control">
+                <option value="">All soils</option>
+                @foreach (var soil in (SelectList)ViewBag.Soils)
+                {
+                    if (soil.Value == Convert.ToString(ViewBag.SoilIdSearch))
+                    {
+                        <option value="@soil.Value" selected>@soil.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@soil.Value">@soil.Text</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-green">
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@(ViewData["PlantingSeasonSortParm"])">Planting Season</a>
+            </th>
+            <th>Name</th>
+            <th>Height (cm)</th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@(ViewData["PriceSortParm"])">Price</a>
+            </th>
+            <th>In Stock</th>
+            <th>Soil</th>
+            <th>Fertilizer</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var plant in Model)
+        {
+            <tr>
+                <td>@plant.PlantingSeason</td>
+                <td>@plant.Name</td>
+                <td>@plant.HeightInCm</td>
+                <td>@plant.Price</td>
+                <td>@(plant.IsInStock)</td>   
+                <td>@plant.Soil?.Name</td>
+                <td>@plant.Fertilizer?.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@plant.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@plant.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@plant.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchPlantingSeason = ViewBag.PlantingSeasonSearch, searchSoilId = ViewBag.SoilIdSearch, sortOrder = ViewData["CurrentSort"] }))
+</div>
